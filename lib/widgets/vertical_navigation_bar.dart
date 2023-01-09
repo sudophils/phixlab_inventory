@@ -6,8 +6,6 @@ class VerticalNavigationMenuBar extends StatefulWidget {
   final List<NavBarMenuItem> menuItems;
   final Function(int index)? onTap;
   final int? currentIndex;
-  final Color? selectedMenuColor;
-  final Color? unSelectedMenuColor;
   final double iconSize;
 
   const VerticalNavigationMenuBar({
@@ -15,8 +13,6 @@ class VerticalNavigationMenuBar extends StatefulWidget {
     required this.menuItems,
     this.onTap,
     this.currentIndex,
-    this.selectedMenuColor,
-    this.unSelectedMenuColor,
     required this.iconSize,
   }) : super(key: key);
 
@@ -40,7 +36,7 @@ class _VerticalTabMenuState extends State<VerticalNavigationMenuBar> {
             ...widget.menuItems.map((menu) => InkWell(
                   onTap: () => widget.onTap!(widget.menuItems.indexOf(menu)),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: defaultSpace + 8),
+                    padding: const EdgeInsets.only(top: defaultSpace * 2),
                     child: Icon(
                       menu.icon,
                       color:
@@ -58,5 +54,6 @@ class _VerticalTabMenuState extends State<VerticalNavigationMenuBar> {
 
 class NavBarMenuItem {
   final IconData icon;
+
   NavBarMenuItem({required this.icon});
 }

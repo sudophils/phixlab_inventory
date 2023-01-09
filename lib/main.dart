@@ -35,25 +35,25 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   var currentIndex = 0;
 
-  Widget buildMainContent({required int currentPage}) {
-    switch (currentPage) {
-      case 0:
-        return const MainContent();
-      case 1:
-        return const Center(child: Text("Cart"));
-      case 2:
-        return const Center(child: Text("Favorite"));
-      case 3:
-        return const Center(child: Text("Customers"));
-      case 4:
-        return const Center(child: Text("Store front"));
-      default:
-        return const MainContent();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    Widget buildMainContent({required int currentPage}) {
+      switch (currentPage) {
+        case 0:
+          return const MainContent();
+        case 1:
+          return const Center(child: Text("Cart"));
+        case 2:
+          return const Center(child: Text("Favorite"));
+        case 3:
+          return const Center(child: Text("Customers"));
+        case 4:
+          return const Center(child: Text("Store front"));
+        default:
+          return const MainContent();
+      }
+    }
+
     return Scaffold(
         body: Container(
       color: backgroundColor,
@@ -85,17 +85,18 @@ class _MainState extends State<Main> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: defaultSpace * 2, top: defaultSpace * 2),
-                        child: Text(
-                          "Products",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5
-                              ?.copyWith(color: Colors.black),
+                      if (currentIndex == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: defaultSpace * 2, top: defaultSpace * 2),
+                          child: Text(
+                            "Products",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(color: Colors.black),
+                          ),
                         ),
-                      ),
                       Expanded(
                           child: buildMainContent(currentPage: currentIndex)),
                     ],
@@ -107,5 +108,74 @@ class _MainState extends State<Main> {
         ],
       ),
     ));
+  }
+}
+
+class PaginationWidget extends StatelessWidget {
+  const PaginationWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: const [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Icon(Icons.keyboard_arrow_left),
+          ),
+          ProductPageLabel(
+            pageNo: 1,
+          ),
+          ProductPageLabel(
+            pageNo: 2,
+          ),
+          ProductPageLabel(
+            pageNo: 3,
+          ),
+          ProductPageLabel(
+            isCurrentPage: true,
+            pageNo: 4,
+          ),
+          ProductPageLabel(
+            pageNo: 5,
+          ),
+          ProductPageLabel(
+            pageNo: "...",
+          ),
+          ProductPageLabel(
+            pageNo: "20",
+          ),
+          Icon(Icons.keyboard_arrow_right)
+        ],
+      ),
+    );
+  }
+}
+
+class ProductPageLabel extends StatelessWidget {
+  final dynamic pageNo;
+  final bool? isCurrentPage;
+
+  const ProductPageLabel({Key? key, required this.pageNo, this.isCurrentPage})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30,
+      height: 25,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: isCurrentPage ?? false ? primaryColor : Colors.transparent),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Center(
+            child: Text(
+          "$pageNo",
+          style: TextStyle(
+              color: isCurrentPage ?? false ? Colors.white : Colors.black87),
+        )),
+      ),
+    );
   }
 }
